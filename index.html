@@ -37,11 +37,15 @@
 function updateCountdown() {
   const now = new Date();
 
-  // Heure de réouverture : 14h00 aujourd'hui
+  // Heure de réouverture : 14h00 aujourd'hui ou demain si déjà passé
   const reopen = new Date();
-  reopen.setHours(16, 0, 0, 0);
+  reopen.setHours(14, 0, 0, 0);
+  if (now >= reopen) {
+    // Si on a déjà passé 14h, le prochain compteur est demain 14h
+    reopen.setDate(reopen.getDate() + 1);
+  }
 
-  let diff = reopen - now;
+  const diff = reopen - now;
 
   const timerEl = document.getElementById("timer");
   const linkEl = document.getElementById("openLink");
