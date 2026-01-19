@@ -15,13 +15,12 @@
       font-weight: bold;
     }
     #openLink {
-      display: none;
+      display: none; /* le lien est caché par défaut */
       font-size: 24px;
       color: blue;
       text-decoration: underline;
       cursor: pointer;
       margin-top: 10px;
-      display: block;
     }
   </style>
 </head>
@@ -37,11 +36,10 @@
 function updateCountdown() {
   const now = new Date();
 
-  // Heure de réouverture : 14h00 aujourd'hui ou demain si déjà passé
+  // Heure de réouverture : 14h00 aujourd'hui ou demain si déjà passée
   const reopen = new Date();
   reopen.setHours(14, 0, 0, 0);
   if (now >= reopen) {
-    // Si on a déjà passé 14h, le prochain compteur est demain 14h
     reopen.setDate(reopen.getDate() + 1);
   }
 
@@ -51,8 +49,8 @@ function updateCountdown() {
   const linkEl = document.getElementById("openLink");
 
   if (diff <= 0) {
-    timerEl.style.display = "none"; // On cache le timer
-    linkEl.style.display = "block"; // On affiche le lien
+    timerEl.style.display = "none"; // cacher le timer
+    linkEl.style.display = "block"; // afficher le lien
     return;
   }
 
