@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Timestamp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: transparent;
+    }
+    #time {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<p>Heure actuelle :</p>
+<div id="time"></div>
+
+<script>
+setInterval(() => {
+  document.getElementById("time").innerText =
+    new Date().toLocaleString("fr-FR");
+}, 1000);
+</script>
+
+</body>
+</html>
