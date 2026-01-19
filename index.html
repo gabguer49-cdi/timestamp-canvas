@@ -15,7 +15,7 @@
       font-weight: bold;
     }
     #openLink {
-      display: none; /* le lien est caché par défaut */
+      display: none; /* lien caché par défaut */
       font-size: 24px;
       color: blue;
       text-decoration: underline;
@@ -38,7 +38,7 @@ function updateCountdown() {
 
   // Heure de réouverture : 14h00 aujourd'hui ou demain si déjà passée
   const reopen = new Date();
-  reopen.setHours(15, 12, 0, 0);
+  reopen.setHours(14, 20, 0, 0);
   if (now >= reopen) {
     reopen.setDate(reopen.getDate() + 1);
   }
@@ -49,8 +49,9 @@ function updateCountdown() {
   const linkEl = document.getElementById("openLink");
 
   if (diff <= 0) {
-    timerEl.style.display = "none"; // cacher le timer
-    linkEl.style.display = "block"; // afficher le lien
+    clearInterval(countdownInterval); // Arrêter le timer
+    timerEl.style.display = "none";    // Cacher le timer
+    linkEl.style.display = "block";    // Afficher le lien
     return;
   }
 
@@ -64,8 +65,9 @@ function updateCountdown() {
     `${String(seconds).padStart(2, "0")}`;
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
+// Stocker l'intervalle pour pouvoir l'arrêter
+const countdownInterval = setInterval(updateCountdown, 1000);
+updateCountdown(); // lancement immédiat
 </script>
 
 </body>
