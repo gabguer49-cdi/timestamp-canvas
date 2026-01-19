@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Statut du site | CDI Mongazon</title> 
+  <title>Réouverture du site</title>
   <style>
     body {
       margin: 0;
@@ -14,24 +14,41 @@
       font-size: 28px;
       font-weight: bold;
     }
+    #openLink {
+      display: none;
+      font-size: 24px;
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-top: 10px;
+      display: block;
+    }
   </style>
 </head>
 <body>
 
-<h1>Le site réouvre dans :</h1>
+<p>Le site rouvre dans :</p>
+<div id="timer">Chargement...</div>
+<a id="openLink" href="https://cdimgz.my.canva.site" target="_blank">
+  Le site est ouvert, clique ici pour y accéder
+</a>
 
 <script>
 function updateCountdown() {
   const now = new Date();
 
-  // Heure de réouverture : 15h00 aujourd’hui
+  // Heure de réouverture : 14h00 aujourd'hui
   const reopen = new Date();
-  reopen.setHours(15, 0, 0, 0);
+  reopen.setHours(16, 0, 0, 0);
 
   let diff = reopen - now;
 
+  const timerEl = document.getElementById("timer");
+  const linkEl = document.getElementById("openLink");
+
   if (diff <= 0) {
-    document.getElementById("timer").innerText = "Le site est ouvert clique <a href="https://cdimgz.my.canva.site">ici</a> pour aller dessus  ";
+    timerEl.style.display = "none"; // On cache le timer
+    linkEl.style.display = "block"; // On affiche le lien
     return;
   }
 
@@ -39,7 +56,7 @@ function updateCountdown() {
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-  document.getElementById("timer").innerText =
+  timerEl.innerText =
     `${String(hours).padStart(2, "0")}:` +
     `${String(minutes).padStart(2, "0")}:` +
     `${String(seconds).padStart(2, "0")}`;
