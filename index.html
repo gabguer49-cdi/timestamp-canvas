@@ -36,25 +36,21 @@
 function updateCountdown() {
   const now = new Date();
 
-  // Heure de réouverture : 14h00 aujourd'hui ou demain si déjà passée
+  // Heure de réouverture : 15h30 aujourd'hui
   const reopen = new Date();
-  reopen.setHours(15, 22, 0, 0);
-  if (now >= reopen) {
-    reopen.setDate(reopen.getDate() + 1);
-  }
-
-  const diff = reopen - now;
+  reopen.setHours(15, 25, 0, 0);
 
   const timerEl = document.getElementById("timer");
   const linkEl = document.getElementById("openLink");
 
-  if (diff <= 0) {
-    clearInterval(countdownInterval); // Arrêter le timer
-    timerEl.style.display = "none";    // Cacher le timer
-    linkEl.style.display = "block";    // Afficher le lien
-    return;
+  // Si l'heure actuelle est déjà passée, on arrête le timer et on montre le lien
+  if (now >= reopen) {
+    timerEl.style.display = "none";   // cacher le timer
+    linkEl.style.display = "block";   // montrer le lien
+    return true; // signal pour arrêter l'intervalle
   }
 
+  const diff = reopen - now;
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
@@ -63,11 +59,18 @@ function updateCountdown() {
     `${String(hours).padStart(2, "0")}:` +
     `${String(minutes).padStart(2, "0")}:` +
     `${String(seconds).padStart(2, "0")}`;
+
+  return false; // timer toujours actif
 }
 
-// Stocker l'intervalle pour pouvoir l'arrêter
-const countdownInterval = setInterval(updateCountdown, 1000);
-updateCountdown(); // lancement immédiat
+// Lancer le timer
+const countdownInterval = setInterval(() => {
+  const finished = updateCountdown();
+  if (finished) clearInterval(countdownInterval);
+}, 1000);
+
+// Lancer immédiatement pour éviter le "chargement..."
+updateCountdown();
 </script>
 
 </body>
