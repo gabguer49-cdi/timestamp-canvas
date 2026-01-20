@@ -9,48 +9,87 @@
       font-family: Arial, sans-serif;
       text-align: center;
       background: transparent;
+      overflow: hidden; /* important pour les confettis */
     }
+
     #timer {
       font-size: 28px;
       font-weight: bold;
     }
+
     #openLink {
-      display: none; /* lien caché par défaut */
+      display: none;
       font-size: 24px;
       color: blue;
       text-decoration: underline;
       cursor: pointer;
       margin-top: 10px;
     }
+
+    /* CONFETTIS */
+    .confetti {
+      position: fixed;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
-<p>Le site réouvre dans :</p>
+<p>Le site rouvre dans :</p>
 <div id="timer">Chargement...</div>
+
 <a id="openLink" href="https://cdimgz.my.canva.site" target="_blank">
-  Le site est ouvert, clique ici pour y accéder
+  🎉 Le site est ouvert, clique ici pour y accéder 🎉
 </a>
 
 <script>
+function launchConfetti() {
+  const colors = ["#ff0", "#f00", "#0f0", "#00f", "#ff00ff", "#00ffff"];
+
+  for (let i = 0; i < 120; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
+    confetti.style.opacity = Math.random();
+
+    document.body.appendChild(confetti);
+
+    setTimeout(() => confetti.remove(), 4000);
+  }
+}
+
 function updateCountdown() {
   const now = new Date();
 
-  // Heure de réouverture : 15h30 aujourd'hui
+  // Heure de réouverture : 15h30
   const reopen = new Date();
-  reopen.setHours(13, 5, 0, 0);
+  reopen.setHours(13, 6, 0, 0);
 
   const timerEl = document.getElementById("timer");
   const linkEl = document.getElementById("openLink");
 
-  // Si l'heure actuelle est déjà passée, on arrête le timer et on montre le lien
   if (now >= reopen) {
-    timerEl.style.display = "none";   // cacher le timer
-    linkEl.style.display = "block";   // montrer le lien
-    return true; // signal pour arrêter l'intervalle
+    timerEl.style.display = "none";
+    linkEl.style.display = "block";
+    launchConfetti(); // 🎉 confettis !
+    return true;
   }
 
   const diff = reopen - now;
+
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
@@ -60,16 +99,13 @@ function updateCountdown() {
     `${String(minutes).padStart(2, "0")}:` +
     `${String(seconds).padStart(2, "0")}`;
 
-  return false; // timer toujours actif
+  return false;
 }
 
-// Lancer le timer
 const countdownInterval = setInterval(() => {
-  const finished = updateCountdown();
-  if (finished) clearInterval(countdownInterval);
+  if (updateCountdown()) clearInterval(countdownInterval);
 }, 1000);
 
-// Lancer immédiatement pour éviter le "chargement..."
 updateCountdown();
 </script>
 
